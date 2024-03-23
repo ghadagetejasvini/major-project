@@ -1,0 +1,28 @@
+.bg-img
+{
+    background-image: url("../about.jpeg");
+    background-size: cover;
+
+}
+.card
+{
+    background-color: rgba(0,0,0,0.2);
+}
+
+.mymargin
+{
+    margin-top: 120px;
+}
+
+.yellow{
+    background-color: #FFC812;
+}
+.blue{
+    background-color: #142133;
+}
+.light_green{
+    background-color: #61CE70;
+}
+.text_yellow{
+    color: #FFC812;
+}

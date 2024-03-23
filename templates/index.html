@@ -1,0 +1,156 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Plant Disease Detection</title>
+
+    <!-- Link to Bootstrap CSS -->
+   <!--  <link rel="stylesheet" href="bootstrap-5.3.2-dist/css/bootstrap.css"> -->
+    <link rel="stylesheet" href="../static/css/bootstrap.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+  />
+    
+
+    <!-- Custom CSS for styling -->
+    <style>
+
+      #selectedImage{
+        text-align: center;
+        margin-left: 30%;
+      }
+      .second_nav{
+        background-color: rgb(243, 90, 90);
+
+      }
+
+      .card
+      {
+          background-color: rgba(0,0,0,0.2);
+      }
+
+      .first_nav{
+        background-color: rgb(180, 52, 52);
+        padding: 1rem !important;
+
+      }
+      
+      .style{
+        background-color: rgb(122, 116, 116);
+      }
+      body{
+        background-image: url("../static/bg.png");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-position: center;
+      }
+
+      .container,
+      .container-fluid,
+      .container-xxl,
+      .container-xl,
+      .container-lg,
+      .container-md,
+      .container-sm {
+      --bs-gutter-x: 1.5rem;
+      --bs-gutter-y: 0;
+      width: 100%;
+      padding-right: calc(var(--bs-gutter-x) * 0.5);
+      padding-left: calc(var(--bs-gutter-x) * 0.5);
+      margin-right: auto;
+      margin-left: auto;
+}
+      
+    </style>
+
+ <!-- JavaScript to display selected file -->
+ <script>
+  function displaySelectedFile() {
+      const fileInput = document.getElementById('fileInput');
+      const selectedFileNameElement = document.getElementById('selectedFileName');
+      const selectedImageElement = document.getElementById('selectedImage');
+
+      const file = fileInput.files[0];
+
+      if (file) {
+          selectedFileNameElement.textContent = 'Selected File: ' + file.name;
+
+          // Check if the file is an image
+          if (file.type.startsWith('image/')) {
+              const reader = new FileReader();
+              reader.onload = function (e) {
+                  selectedImageElement.src = e.target.result;
+                  selectedImageElement.style.display = 'block';
+              };
+              reader.readAsDataURL(file);
+          } else {
+              // Hide the image element if the selected file is not an image
+              selectedImageElement.style.display = 'none';
+          }
+      } else {
+          // Clear the selected file name if no file is selected
+          selectedFileNameElement.textContent = '';
+          // Hide the image element if no file is selected
+          selectedImageElement.style.display = 'none';
+      }
+  }
+</script>
+
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-light first_nav p-3">
+      <div class="container-fluid ">
+        <a class="navbar-brand" href="#">
+          <img src="../static/leaf.png" alt="logo" width="30" height="24" class="d-inline-block align-text-top">
+          Plant Disease Detection
+        </a>
+      </div>
+    </nav>
+
+      <!-- second nav bar -->
+      <div class="second_nav">
+      <nav class="navbar navbar-expand-sm  navbar-dark">
+        <div class="">
+
+          <a class="text-decoration-none mx-3 fs-5 text-white" href="/">Home</a>
+          <a class="text-decoration-none mx-3 fs-5 text-white" href="/about_us">About Us</a>
+        </div>
+      </nav>
+    </div>
+
+    <div class="p-4 bg-img">
+        <div class="card col-md-6 animate__animated animate__zoomIn mx-auto p-3 text-uppercase text-center ">
+            <h1 class="">Start your Detection...</h1>
+
+            <p class=" p-1">
+                <b>Select the Image to detect  <br>the Disease of your Plant </b> <br><br>
+
+                <form method="POST" action="/predict" enctype="multipart/form-data">
+                    <input type="file" name="file" id="fileInput" class="text-center" onchange="displaySelectedFile()">
+                    <br><br><br>
+                    <input type="submit" value="   Predict   " class="text-center bg-info btn btn-info">
+                </form>
+
+                <br><br>
+                <div class="text-white">
+                    <h5 id="selectedFileName"></h5>
+                    <img id="selectedImage" style="max-width: 100%; max-height: 300px; display: none;">
+                    {% if prediction %}
+                        <h5>Prediction: {{ prediction }}</h5>
+                        <h5>Confidence: {{ confidence }} %</h5>
+                    {% endif %}
+                </div>
+            </p>
+        </div>
+    </div>
+
+</body>
+</html>
